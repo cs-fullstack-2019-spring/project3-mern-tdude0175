@@ -9,9 +9,11 @@ var BleaterSchema = new Schema
         password:{ type:String, required:true, max:100},
         bleat:[
             {
-                type:String,
-                created:Date,
-            }]
+                private:{type:Boolean, defaultValue: false},
+                message:{type:String},
+                created:{type:Date,defaultValue:Date.now()},
+            }],
+        profilePicture: {type:String}
     }
 );
 

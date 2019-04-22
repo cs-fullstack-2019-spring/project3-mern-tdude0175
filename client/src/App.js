@@ -6,7 +6,25 @@ import UserPage from "./components/UserPage";
 import SearchPage from "./components/SearchPage";
 
 class App extends Component {
-  render() {
+    constructor(props) {
+        super(props);
+        this.state=
+            {
+                user:
+                    {
+                        isLoggedIn:false,
+                        username:""
+                    }
+            }
+    }
+
+    LoggingIn=(name,status)=>
+    {
+        this.setState({username:name,isLoggedIn:status});
+    };
+
+
+    render() {
     return (
       <div className="App">
         <h1>Welcome to Bleater</h1>
@@ -14,9 +32,9 @@ class App extends Component {
           <Link to={"/"}>Home</Link>
           <Link to={"/AccountPage"}>Account</Link>
           <Link to={"/Search"}>Search</Link>
-          <Route exact path={"/"} component={()=><HomePage/>}/>
-          <Route path={"/AccountPage"} component={()=><UserPage/>}/>
-          <Route path={"/Search"} component={()=><SearchPage/>}/>
+          <Route exact path={"/"} component={()=><HomePage LoggingIn={this.LoggingIn} isLoggedIn={this.state.isLoggedIn}/>}/>
+          <Route path={"/AccountPage"} component={()=><UserPage isLoggedIn={this.state.isLoggedIn}/>}/>
+          <Route path={"/Search"} component={()=><SearchPage />}/>
         </Router>
       </div>
     );
