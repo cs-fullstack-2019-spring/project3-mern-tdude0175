@@ -21,7 +21,8 @@ export default class HomePage extends Component {
                 data.json()
             )
             // .then(data => console.log(data))
-            .then(string => this.setState({bleats:string}))
+            .then(string => this.setState({bleats:string}));
+
     };
 
     loginConfirm = (e) => {
@@ -34,7 +35,7 @@ export default class HomePage extends Component {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                        username: e.target.username.value.toLowerCase(),
+                        username: e.target.username.value,
                         password: e.target.password.value
                     }
                 )
@@ -42,19 +43,30 @@ export default class HomePage extends Component {
             .then(data => data.text())
             .then( response =>
             {
-                if(response!== null) {
+                if(response === "failed to get through login") {
+                    console.log("failed to log in")
+                }
+                else{
                     this.props.LoggingIn(response, true)
                 }
             })
     };
 
     render() {
-        console.log(this.state.bleats);
+        var mapData = this.state.bleats.map((Item)=>
+        {
+            return(
+                <div key={Item.bleat._id}>
+                    <h3>{Item.username}</h3>
+                    {Item.bleat.message}
+                </div>
+            )
+        });
         if (this.props.isLoggedIn) {
             return (
                 <div>
                     <h1>Home Page</h1>
-                    {this.state.bleats}
+                    {mapData}
                 </div>
             );
         } else {
@@ -72,7 +84,7 @@ export default class HomePage extends Component {
                         </p>
                         <button>Submit</button>
                     </form>
-                    {this.state.bleats}
+                    {mapData}
                 </div>
             )
         }

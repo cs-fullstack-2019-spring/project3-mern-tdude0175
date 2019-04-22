@@ -5,9 +5,13 @@ export default class UserPage extends Component {
         super(props);
         this.state = {
             message: "",
+            personalBleats: []
         }
     }
 
+    componentDidMount() {
+        this.gatherBleats()
+    }
 
     createAccount = (e) => {
         e.preventDefault();
@@ -20,7 +24,7 @@ export default class UserPage extends Component {
                 },
             body: JSON.stringify(
                 {
-                    username: e.target.username.value.toLowerCase(),
+                    username: e.target.username.value,
                     password: e.target.password.value,
                 })
         })
@@ -48,6 +52,33 @@ export default class UserPage extends Component {
             })
             .then(data=> data.text())
             .then(response => this.setState({message:response}))
+    };
+
+    gatherBleats=()=>
+    {
+        console.log("getting your bleats");
+        if(this.props.username !== '')
+        {
+           fetch("/bleats/findBleats",
+               {
+                   method:"POST",
+                   headers:
+                       {
+                           "Accept": "application/json",
+                           "Content-type": "application/json"
+                       },
+                   body: JSON.stringify(
+                       {
+                           username: this.props.username,
+                       })
+               })
+               .then(data => data.json())
+               .then(response =>)
+        }
+        else
+            {
+                console.log("Wait are you supposed to be here??")
+            }
     };
 
     render() {

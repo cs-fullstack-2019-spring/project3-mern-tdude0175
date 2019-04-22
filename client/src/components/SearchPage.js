@@ -9,14 +9,21 @@ export default class SearchPage extends Component
         }
     }
 
+    searchBleats =(e)=>
+    {
+        e.preventDefault();
+        console.log("searching will take time");
+        console.log(e.target.search.value);
+    };
+
     render() {
         return (
             <div>
                 <h1>Search Page</h1>
-                <form>
+                <form onSubmit={this.searchBleats}>
                     <p>
                         <label>Search:</label>
-                        <input type="text"/>
+                        <input name={"search"} type="text"/>
                     </p>
                     <button>Submit</button>
                 </form>
