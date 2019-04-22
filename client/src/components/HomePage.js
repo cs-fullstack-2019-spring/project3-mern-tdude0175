@@ -1,11 +1,32 @@
 import React, {Component} from "react"
 
 export default class HomePage extends Component {
+    constructor(props) {
+        super(props);
+        this.state=
+            {
+                bleats:[]
+            }
+    }
 
+    componentDidMount() {
+        this.getBleats()
+    }
+
+    getBleats =() =>
+    {
+        fetch("bleats/")
+            .then(data =>
+                // console.log(data);
+                data.json()
+            )
+            // .then(data => console.log(data))
+            .then(string => this.setState({bleats:string}))
+    };
 
     loginConfirm = (e) => {
         e.preventDefault();
-        fetch("/users/login",
+        fetch("users/login",
             {
                 method: "POST",
                 headers: {
@@ -13,7 +34,7 @@ export default class HomePage extends Component {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
-                        username: e.target.username.value,
+                        username: e.target.username.value.toLowerCase(),
                         password: e.target.password.value
                     }
                 )
@@ -21,7 +42,6 @@ export default class HomePage extends Component {
             .then(data => data.text())
             .then( response =>
             {
-                console.log(response);
                 if(response!== null) {
                     this.props.LoggingIn(response, true)
                 }
@@ -29,10 +49,12 @@ export default class HomePage extends Component {
     };
 
     render() {
+        console.log(this.state.bleats);
         if (this.props.isLoggedIn) {
             return (
                 <div>
                     <h1>Home Page</h1>
+                    {this.state.bleats}
                 </div>
             );
         } else {
@@ -50,6 +72,7 @@ export default class HomePage extends Component {
                         </p>
                         <button>Submit</button>
                     </form>
+                    {this.state.bleats}
                 </div>
             )
         }

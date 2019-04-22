@@ -134,7 +134,7 @@ router.post("/login",
         }),
     (req,res)=>
     {
-      // req.session = req.body.username;
+      req.session.username = req.body.username;
       console.log("Cookie Saved?");
       res.send(req.body.username);
     }

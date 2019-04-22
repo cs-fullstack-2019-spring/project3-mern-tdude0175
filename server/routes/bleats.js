@@ -6,7 +6,25 @@ var BleatCollection = require("../models/BleatSchema");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.send("We bleating bro");
+    console.log("we bleatin bro");
+    let bleatArray = [];
+    BleatCollection.find({},(errors,results)=>
+    {
+        if(errors) res.send(errors);
+        else
+            {
+                console.log("We Found this!!");
+                for(i=0;i<results.length;i++)
+                {
+                    // console.log(results[i].bleat);
+                    bleatArray.push(results[i].bleat)
+                }
+                console.log("results:");
+                console.log(bleatArray);
+                res.json([bleatArray])
+            }
+    });
+
 });
 
 router.post("/addBleat",(req,res)=>
@@ -28,7 +46,7 @@ router.put("/editBleat",(req,res)=>
             else
                 {
                     console.log("bleat updated");
-                    res.send(results);
+
                 }
         });
 });

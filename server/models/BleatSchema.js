@@ -11,9 +11,10 @@ var BleaterSchema = new Schema
             {
                 private:{type:Boolean, defaultValue: false},
                 message:{type:String},
-                created:{type:Date,defaultValue:Date.now()},
+                created:{type:Date, default: Date.now()},
             }],
-        profilePicture: {type:String}
+        profilePicture: {type:String},
+        backgroundImage:{type: String}
     }
 );
 
