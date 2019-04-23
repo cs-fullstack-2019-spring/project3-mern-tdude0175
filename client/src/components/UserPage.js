@@ -52,6 +52,7 @@ export default class UserPage extends Component {
             })
             .then(data=> data.text())
             .then(response => this.setState({message:response}))
+        this.gatherBleats()
     };
 
     gatherBleats=()=>
@@ -73,7 +74,7 @@ export default class UserPage extends Component {
                        })
                })
                .then(data => data.json())
-               .then(response =>)
+               .then(response => this.setState({personalBleats:response}))
         }
         else
             {
@@ -83,6 +84,16 @@ export default class UserPage extends Component {
 
     render() {
         if (this.props.isLoggedIn) {
+            console.log(this.state.personalBleats);
+            let mappedBleats = this.state.personalBleats.map((bleat)=>
+            {
+                return(
+                    <p key={bleat._id}>
+                        {bleat.message}
+                        <button>Edit</button>
+                    </p>
+                )
+            });
             return (
                 <div>
                     <h1>Welcome {this.props.username}!</h1>
@@ -102,6 +113,8 @@ export default class UserPage extends Component {
                         <button>Bleat!!</button>
                     </form>
                     {this.state.message}
+                    <hr/>
+                        {mappedBleats}
                 </div>
             );
         } else {

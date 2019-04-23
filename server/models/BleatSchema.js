@@ -15,7 +15,7 @@ var BleaterSchema = new Schema
                 picture:{type:String}
             }],
         profilePicture: {type:String},
-        backgroundImage:{type: String}
+        backgroundImage:{type:String}
     }
 );
 

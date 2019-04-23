@@ -14,6 +14,15 @@ export default class SearchPage extends Component
         e.preventDefault();
         console.log("searching will take time");
         console.log(e.target.search.value);
+        fetch("bleats/searchBleats",
+        {
+            method:"POST",
+            headers:
+                {
+                    "Accept": "application/json",
+                    "Content-type": "application/json"
+                },
+        });
     };
 
     render() {

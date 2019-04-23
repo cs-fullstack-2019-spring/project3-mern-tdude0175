@@ -8,7 +8,7 @@ var BleatCollection = require("../models/BleatSchema");
 router.get('/', function (req, res, next) {
     console.log("we bleatin bro");
     let bleatArray = [];
-    BleatCollection.find({},null, {sort: '-date'},(errors, results) => {
+    BleatCollection.find({},(errors, results) => {
         if (errors) res.send(errors);
         else {
             console.log("We Found this!!");
@@ -22,15 +22,17 @@ router.get('/', function (req, res, next) {
                         //     break
                         // }
                         let bleat = {username: results[i].username, bleat: results[i].bleat[x]};
+                        // console.log(bleat);
                         bleatArray.push(bleat);
 
                     }
                 }
             }
             console.log("sorting");
-            console.log(bleatArray.sort());
+            // console.log(bleatArray[2].bleat.created);
+            bleatArray.sort(function(a,b){return b.bleat.created - a.bleat.created});
             // console.log("results:");
-            // console.log(bleatArray);
+            console.log(bleatArray);
             res.json(bleatArray)
         }
     });
@@ -63,6 +65,15 @@ router.put("/editBleat", (req, res) => {
 
             }
         });
+});
+
+router.post("/searchBleats",(req,res)=>
+{
+    BleatCollection.find({bleat:[{$all:{message:"test"}}]},(errors,results)=>
+    {
+        console.log("something happened");
+        console.log(results)
+    })
 });
 
 module.exports = router;

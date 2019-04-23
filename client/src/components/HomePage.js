@@ -21,7 +21,7 @@ export default class HomePage extends Component {
                 data.json()
             )
             // .then(data => console.log(data))
-            .then(string => this.setState({bleats:string}));
+            .then(string => this.setState({bleats:string.slice(0,5)}));
 
     };
 
@@ -53,6 +53,7 @@ export default class HomePage extends Component {
     };
 
     render() {
+        // console.log(this.state.bleats);
         var mapData = this.state.bleats.map((Item)=>
         {
             return(
