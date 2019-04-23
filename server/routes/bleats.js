@@ -8,7 +8,7 @@ var BleatCollection = require("../models/BleatSchema");
 router.get('/', function (req, res, next) {
     console.log("we bleatin bro");
     let bleatArray = [];
-    BleatCollection.find({},(errors, results) => {
+    BleatCollection.find({}, (errors, results) => {
         if (errors) res.send(errors);
         else {
             console.log("We Found this!!");
@@ -30,7 +30,9 @@ router.get('/', function (req, res, next) {
             }
             console.log("sorting");
             // console.log(bleatArray[2].bleat.created);
-            bleatArray.sort(function(a,b){return b.bleat.created - a.bleat.created});
+            bleatArray.sort(function (a, b) {
+                return b.bleat.created - a.bleat.created
+            });
             // console.log("results:");
             console.log(bleatArray);
             res.json(bleatArray)
@@ -39,12 +41,10 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.post("/findBleats",(req,res)=>
-{
-    BleatCollection.find({username:req.body.username},(errors,results)=>
-    {
-        if(errors) res.send(errors);
-        else(res.send(results[0].bleat))
+router.post("/findBleats", (req, res) => {
+    BleatCollection.find({username: req.body.username}, (errors, results) => {
+        if (errors) res.send(errors);
+        else (res.send(results[0].bleat))
     })
 })
 
@@ -67,12 +67,30 @@ router.put("/editBleat", (req, res) => {
         });
 });
 
-router.post("/searchBleats",(req,res)=>
-{
-    BleatCollection.find({bleat:[{$all:{message:"test"}}]},(errors,results)=>
-    {
+router.post("/searchBleats", (req, res) => {
+    let bleatArray = [];
+    BleatCollection.find({"bleat.message": {"$regex": req.body.query}}, (errors, results) => {
         console.log("something happened");
-        console.log(results)
+        console.log(results);
+        for (i = 0; i < results.length; i++) {
+            // console.log(results[i].bleat);
+            for (x = 0; x < results[i].bleat.length; x++) {
+                if (results[i].bleat[x].private) {
+
+                }
+                if (results[i].bleat[x].message.includes(req.body.query)) {
+
+                    let bleat = {username: results[i].username, bleat: results[i].bleat[x]};
+                    // console.log(bleat);
+                    bleatArray.push(bleat);
+
+                }
+            }
+        }
+        // console.log(bleatArray[2].bleat.created);
+        // console.log("results:");
+        // console.log(bleatArray);
+        res.json(bleatArray)
     })
 });
 

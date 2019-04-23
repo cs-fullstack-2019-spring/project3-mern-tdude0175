@@ -3,9 +3,9 @@ import React, {Component} from "react"
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
-        this.state=
+        this.state =
             {
-                bleats:[]
+                bleats: []
             }
     }
 
@@ -13,15 +13,14 @@ export default class HomePage extends Component {
         this.getBleats()
     }
 
-    getBleats =() =>
-    {
+    getBleats = () => {
         fetch("bleats/")
             .then(data =>
                 // console.log(data);
                 data.json()
             )
             // .then(data => console.log(data))
-            .then(string => this.setState({bleats:string.slice(0,5)}));
+            .then(string => this.setState({bleats: string.slice(0, 5)}));
 
     };
 
@@ -41,12 +40,10 @@ export default class HomePage extends Component {
                 )
             })
             .then(data => data.text())
-            .then( response =>
-            {
-                if(response === "failed to get through login") {
+            .then(response => {
+                if (response === "failed to get through login") {
                     console.log("failed to log in")
-                }
-                else{
+                } else {
                     this.props.LoggingIn(response, true)
                 }
             })
@@ -54,9 +51,8 @@ export default class HomePage extends Component {
 
     render() {
         // console.log(this.state.bleats);
-        var mapData = this.state.bleats.map((Item)=>
-        {
-            return(
+        var mapData = this.state.bleats.map((Item) => {
+            return (
                 <div key={Item.bleat._id}>
                     <h3>{Item.username}</h3>
                     {Item.bleat.message}
