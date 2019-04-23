@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import {BrowserRouter as Router, Link, Route} from "react-router-dom";
 
 export default class UserPage extends Component {
     constructor(props) {
@@ -12,6 +13,13 @@ export default class UserPage extends Component {
     componentDidMount() {
         this.gatherBleats()
     }
+
+    logout=()=>
+    {
+      console.log("logging Out");
+      fetch("/users/logout");
+      this.props.LoggingIn("",false)
+    };
 
     createAccount = (e) => {
         e.preventDefault();
@@ -51,7 +59,7 @@ export default class UserPage extends Component {
                     })
             })
             .then(data=> data.text())
-            .then(response => this.setState({message:response}))
+            .then(response => this.setState({message:response}));
         this.gatherBleats()
     };
 
@@ -82,21 +90,30 @@ export default class UserPage extends Component {
             }
     };
 
+    editIdUpdate=(e)=>
+    {
+        // console.log(e.target.name);
+        this.props.saveBleatId(e.target.name)
+    }
+
     render() {
         if (this.props.isLoggedIn) {
             console.log(this.state.personalBleats);
             let mappedBleats = this.state.personalBleats.map((bleat)=>
             {
                 return(
-                    <p key={bleat._id}>
+                    <div key={bleat._id}>
+                        <p>
                         {bleat.message}
-                        <button>Edit</button>
-                    </p>
+                        <Link to={"/edit"}><button name={bleat._id} onClick={this.editIdUpdate}>Edit</button></Link>
+                        </p>
+                    </div>
                 )
             });
             return (
                 <div>
                     <h1>Welcome {this.props.username}!</h1>
+                    <button onClick={this.logout}>LogOut</button>
                     <form onSubmit={this.makeABleat}>
                         <p>
                             <input id={"message"} name={"message"} type="text"

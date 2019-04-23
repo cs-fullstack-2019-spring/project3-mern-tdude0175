@@ -135,4 +135,11 @@ router.get("/faillogin", (req, res) => {
     res.send("failed to get through login");
 });
 
+router.get("/logout",(req,res)=>
+{
+    console.log("log is set to out");
+    req.session.username = null;
+
+});
+
 module.exports = router;

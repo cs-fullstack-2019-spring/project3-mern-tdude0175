@@ -41,12 +41,47 @@ router.get('/', function (req, res, next) {
 
 });
 
+router.post("/locateBleatToEdit",(req,res)=>
+{
+    let bleat = {};
+    console.log("hit the server");
+    BleatCollection.findOne({"bleat._id":{_id:req.body.bleatId}},(errors,results)=>
+    {
+        // console.log(req.body.bleatId);
+        if(errors) res.send(errors);
+        else{
+            // console.log(results.bleat);
+            for (i = 0; i < results.bleat.length; i++) {
+                // console.log(results.bleat[i]);
+                if(results.bleat[i]._id == req.body.bleatId)
+                {
+                    console.log("Found IT!");
+                    res.json(results.bleat[i]);
+                    // console.log("this is the bleat" +bleat)
+                }
+            }
+        }
+
+    })
+});
+
+router.put("/editBleat", (req, res) => {
+    BleatCollection.findOneAndUpdate({"bleat._id": req.body._id},
+        {$set:{"bleat.$": req.body}}, (errors, results) => {
+            if (errors) res.send(errors);
+            else {
+                console.log("bleat updated");
+                res.send("made it through??")
+            }
+        });
+});
+
 router.post("/findBleats", (req, res) => {
     BleatCollection.find({username: req.body.username}, (errors, results) => {
         if (errors) res.send(errors);
         else (res.send(results[0].bleat))
     })
-})
+});
 
 router.post("/addBleat", (req, res) => {
     BleatCollection.findOneAndUpdate({username: req.body.username},
@@ -56,16 +91,7 @@ router.post("/addBleat", (req, res) => {
         });
 });
 
-router.put("/editBleat", (req, res) => {
-    BleatCollection.findOneAndUpdate({username: req.body.username},
-        {$push: {bleat: req.body}}, (errors, results) => {
-            if (errors) res.send(errors);
-            else {
-                console.log("bleat updated");
 
-            }
-        });
-});
 
 router.post("/searchBleats", (req, res) => {
     let bleatArray = [];

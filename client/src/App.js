@@ -4,16 +4,18 @@ import './App.css';
 import HomePage from "./components/HomePage";
 import UserPage from "./components/UserPage";
 import SearchPage from "./components/SearchPage";
+import EditPage from "./components/EditPage";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state =
             {
+                bleatId: "",
                 user:
                     {
                         isLoggedIn: false,
-                        username: ""
+                        username: "",
                     }
             }
     }
@@ -22,6 +24,9 @@ class App extends Component {
         this.setState({user: {username: name, isLoggedIn: status}});
     };
 
+    saveBleatId = (id) => {
+        this.setState({bleatId: id})
+    };
 
     render() {
         return (
@@ -33,9 +38,13 @@ class App extends Component {
                     <Link to={"/Search"}>Search</Link>
                     <Route exact path={"/"} component={() => <HomePage LoggingIn={this.LoggingIn}
                                                                        isLoggedIn={this.state.user.isLoggedIn}/>}/>
-                    <Route path={"/AccountPage"} component={() => <UserPage username={this.state.user.username}
-                                                                            isLoggedIn={this.state.user.isLoggedIn}/>}/>
+                    <Route path={"/AccountPage"}
+                           component={() => <UserPage LoggingIn={this.LoggingIn} username={this.state.user.username}
+                                                      saveBleatId={this.saveBleatId}
+                                                      isLoggedIn={this.state.user.isLoggedIn}/>}/>
                     <Route path={"/Search"} component={() => <SearchPage/>}/>
+                    <Route exact path={"/edit"} component={() => <EditPage username={this.state.user.username}
+                                                                           bleatId={this.state.bleatId}/>}/>
                 </Router>
             </div>
         );

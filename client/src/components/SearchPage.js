@@ -53,9 +53,7 @@ export default class SearchPage extends Component {
                     </p>
                     <button>Submit</button>
                 </form>
-                <p>
                     {mapData}
-                </p>
             </div>
         );
     }
