@@ -134,7 +134,7 @@ export default class UserPage extends Component {
             }
             if(this.state.pictures.backgroundImage)
             {
-                var background = <img className={"Background"} src={this.state.pictures.backgroundImage} alt={this.props.username} height={"5%"} width={"90%"}/>
+                var background = <img className={"Background"} src={this.state.pictures.backgroundImage} alt={this.props.username} height={"5%"} width={"50%"}/>
             }
             console.log(this.state.personalBleats);
             let mappedBleats = this.state.personalBleats.map((bleat)=>

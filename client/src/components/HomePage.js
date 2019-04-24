@@ -1,11 +1,12 @@
 import React, {Component} from "react"
-
+var tweetDisplay = 5;
 export default class HomePage extends Component {
     constructor(props) {
         super(props);
         this.state =
             {
-                bleats: []
+                bleats: [],
+                tweetDisplay:5
             }
     }
 
@@ -20,7 +21,7 @@ export default class HomePage extends Component {
                 data.json()
             )
             // .then(data => console.log(data))
-            .then(string => this.setState({bleats: string.slice(0, 5)}));
+            .then(string => this.setState({bleats: string.slice(0, this.state.tweetDisplay)}));
 
     };
 
@@ -49,6 +50,12 @@ export default class HomePage extends Component {
             })
     };
 
+    changeBleatDisplay =(e)=>
+    {
+        this.setState({tweetDisplay:e.target.value});
+        this.getBleats()
+    };
+
     render() {
         // console.log(this.state.bleats);
         var mapData = this.state.bleats.map((Item) => {
@@ -74,6 +81,11 @@ export default class HomePage extends Component {
             return (
                 <div>
                     <h1>Home Page</h1>
+                    <p>
+                        <button value={5} onClick={this.changeBleatDisplay}>5</button>
+                        <button value={10} onClick={this.changeBleatDisplay}>10</button>
+                        <button value={20} onClick={this.changeBleatDisplay}>20</button>
+                    </p>
                     {mapData}
                 </div>
             );
@@ -92,6 +104,11 @@ export default class HomePage extends Component {
                         </p>
                         <button>Submit</button>
                     </form>
+                    <p>
+                        <button value={5} onClick={this.changeBleatDisplay}>5</button>
+                        <button value={10} onClick={this.changeBleatDisplay}>10</button>
+                        <button value={20} onClick={this.changeBleatDisplay}>20</button>
+                    </p>
                     {mapData}
                 </div>
             )
