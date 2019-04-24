@@ -104,10 +104,10 @@ router.post("/searchBleats", (req, res) => {
                 if (results[i].bleat[x].private) {
 
                 }
-                if (results[i].bleat[x].message.includes(req.body.query)) {
+                else if (results[i].bleat[x].message.includes(req.body.query)) {
 
                     let bleat = {username: results[i].username, bleat: results[i].bleat[x]};
-                    // console.log(bleat);
+                    console.log(bleat);
                     bleatArray.push(bleat);
 
                 }

@@ -61,8 +61,8 @@ export default class EditPage extends Component
         // console.log(this.props.username);
         // console.log(this.props.bleatId);
         console.log(this.state.private);
-        console.log(this.state.message);
-        console.log(this.state.picture);
+        // console.log(this.state.message);
+        // console.log(this.state.picture);
         return (
             <div>
                 <h1>Edit Form</h1>

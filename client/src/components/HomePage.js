@@ -52,12 +52,23 @@ export default class HomePage extends Component {
     render() {
         // console.log(this.state.bleats);
         var mapData = this.state.bleats.map((Item) => {
-            return (
-                <div key={Item.bleat._id}>
-                    <h3>{Item.username}</h3>
-                    {Item.bleat.message}
-                </div>
-            )
+            console.log(Item);
+            if (Item.bleat.picture) {
+                return (
+                    <div className={"bleat"} key={Item.bleat._id}>
+                        <img src={Item.bleat.picture} alt={Item.username}/>
+                        <h3>{Item.username}</h3>
+                       <p>{Item.bleat.message} </p>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className={"bleat"} key={Item.bleat._id}>
+                        <h3>{Item.username}</h3>
+                       <p>{Item.bleat.message} </p>
+                    </div>
+                )
+            }
         });
         if (this.props.isLoggedIn) {
             return (

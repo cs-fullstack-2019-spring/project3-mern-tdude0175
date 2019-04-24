@@ -27,8 +27,17 @@ var createHash = function (password) {
 };
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
+router.post('/profilePictures', function (req, res, next) {
+    console.log("GETTIN DA PICUTRES!");
+    BleatCollection.findOne({username:req.body.username},(errors,results)=>
+    {
+        console.log("FOUND YOU");
+        if(errors) res.send(errors);
+        else{
+            console.log("WE HIT THE BIG LEAGUES");
+            res.json({ profilePicture:results.profilePicture, backgroundImage:results.backgroundImage})
+        }
+    })
 });
 
 //Strategy for create a new user in a MERN fullstack project
@@ -53,6 +62,8 @@ passport.use("register", new LocalStrategy
 
                 newUser.username = username;
                 newUser.password = createHash(password);
+                newUser.profilePicture = req.body.profilePicture;
+                newUser.backgroundImage = req.body.backgroundImage;
                 /*newUser.item to save = [req.body.item to save];*/
 
                 newUser.save((err) => {

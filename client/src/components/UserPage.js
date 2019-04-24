@@ -6,13 +6,40 @@ export default class UserPage extends Component {
         super(props);
         this.state = {
             message: "",
-            personalBleats: []
+            personalBleats: [],
+            pictures:{}
         }
     }
 
     componentDidMount() {
-        this.gatherBleats()
+        this.gatherBleats();
+        if(this.props.isLoggedIn)
+        this.getPictures();
     }
+
+    getPictures=()=>
+    {
+        console.log("DUN DUN DUNNNN");
+        fetch("/users/profilePictures",
+            {
+                method:"POST",
+                headers:
+                    {
+                        "Accept": "application/json",
+                        "Content-type": "application/json"
+                    },
+                body:JSON.stringify(
+                    {
+                        username:this.props.username,
+                    })
+            })
+            .then(data => data.json())
+            .then(response =>{
+                console.log(response);
+                this.setState({pictures:response})
+            });
+        console.log(this.state.pictures)
+    };
 
     logout=()=>
     {
@@ -34,6 +61,8 @@ export default class UserPage extends Component {
                 {
                     username: e.target.username.value,
                     password: e.target.password.value,
+                    profilePicture: e.target.profilePicture.value,
+                    backgroundImage: e.target.background.value,
                 })
         })
             .then(data => data.text())
@@ -56,6 +85,7 @@ export default class UserPage extends Component {
                         username: this.props.username,
                         message: e.target.message.value,
                         private: e.target.private.checked,
+                        picture: e.target.picture.value,
                     })
             })
             .then(data=> data.text())
@@ -94,10 +124,18 @@ export default class UserPage extends Component {
     {
         // console.log(e.target.name);
         this.props.saveBleatId(e.target.name)
-    }
+    };
 
     render() {
         if (this.props.isLoggedIn) {
+            if(this.state.pictures.profilePicture)
+            {
+                var picture = <img src={this.state.pictures.profilePicture} alt={this.props.username} width={"20%"} height={"20%"}/>
+            }
+            if(this.state.pictures.backgroundImage)
+            {
+                var background = <img className={"Background"} src={this.state.pictures.backgroundImage} alt={this.props.username} height={"5%"} width={"90%"}/>
+            }
             console.log(this.state.personalBleats);
             let mappedBleats = this.state.personalBleats.map((bleat)=>
             {
@@ -112,8 +150,10 @@ export default class UserPage extends Component {
             });
             return (
                 <div>
+                    {background}
                     <h1>Welcome {this.props.username}!</h1>
-                    <button onClick={this.logout}>LogOut</button>
+                    {picture}
+                    <p><button onClick={this.logout}>LogOut</button></p>
                     <form onSubmit={this.makeABleat}>
                         <p>
                             <input id={"message"} name={"message"} type="text"
@@ -124,8 +164,8 @@ export default class UserPage extends Component {
                             <input name={"private"} id={"private"} type="checkbox"/>
                         </p>
                         <p>
-                            <label htmlFor={"image"}>Image:</label>
-                            <input name={"image"} id={"image"} type="text"/>
+                            <label htmlFor={"picture"}>Image:</label>
+                            <input name={"picture"} id={"picture"} type="text"/>
                         </p>
                         <button>Bleat!!</button>
                     </form>
