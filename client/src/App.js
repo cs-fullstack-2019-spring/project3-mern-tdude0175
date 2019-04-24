@@ -7,6 +7,7 @@ import SearchPage from "./components/SearchPage";
 import EditPage from "./components/EditPage";
 
 class App extends Component {
+    // saves the state of the user being logged in and their username
     constructor(props) {
         super(props);
         this.state =
@@ -19,11 +20,11 @@ class App extends Component {
                     }
             }
     }
-
+    // a function to change the state of the user wether they are logged in or not
     LoggingIn = (name, status) => {
         this.setState({user: {username: name, isLoggedIn: status}});
     };
-
+    // function to grab a bleats id to send to the edit route to grab the correct bleat
     saveBleatId = (id) => {
         this.setState({bleatId: id})
     };

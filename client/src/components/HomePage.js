@@ -1,19 +1,20 @@
 import React, {Component} from "react"
 var tweetDisplay = 5;
 export default class HomePage extends Component {
+    // bleat is the group of bleats to display and bleatDisplay is used to display a specific amount of bleats
     constructor(props) {
         super(props);
         this.state =
             {
                 bleats: [],
-                tweetDisplay:5
+                bleatDisplay:5
             }
     }
-
+    // when the component mounts it will get the bleats to display with standard bleat display being 5
     componentDidMount() {
         this.getBleats()
     }
-
+    // goes through the proxy to get the bleats to show and takes only the top 5, 10 , 20 depending on bleatDisplay
     getBleats = () => {
         fetch("bleats/")
             .then(data =>
@@ -21,10 +22,10 @@ export default class HomePage extends Component {
                 data.json()
             )
             // .then(data => console.log(data))
-            .then(string => this.setState({bleats: string.slice(0, this.state.tweetDisplay)}));
+            .then(string => this.setState({bleats: string.slice(0, this.state.bleatDisplay)}));
 
     };
-
+    // function to go to the backend to logg the person in
     loginConfirm = (e) => {
         e.preventDefault();
         fetch("users/login",
@@ -49,10 +50,10 @@ export default class HomePage extends Component {
                 }
             })
     };
-
+    // function used to change the amount of bleats to be displayed and regathers the bleats to display
     changeBleatDisplay =(e)=>
     {
-        this.setState({tweetDisplay:e.target.value});
+        this.setState({bleatDisplay:e.target.value});
         this.getBleats()
     };
 

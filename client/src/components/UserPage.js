@@ -2,6 +2,9 @@ import React, {Component} from "react"
 import {BrowserRouter as Router, Link, Route} from "react-router-dom";
 
 export default class UserPage extends Component {
+    // message is for if a person adds a bleat or successfully makes a user
+    // personal bleats is logged in users bleats
+    // picutres is background image and profile picture
     constructor(props) {
         super(props);
         this.state = {
@@ -10,13 +13,13 @@ export default class UserPage extends Component {
             pictures:{}
         }
     }
-
+    //gets the persons bleats and pictures if they are logged in
     componentDidMount() {
         this.gatherBleats();
         if(this.props.isLoggedIn)
         this.getPictures();
     }
-
+    // fetches from proxy for the users pictures
     getPictures=()=>
     {
         console.log("DUN DUN DUNNNN");
@@ -40,14 +43,14 @@ export default class UserPage extends Component {
             });
         console.log(this.state.pictures)
     };
-
+    // allows the person to log out
     logout=()=>
     {
       console.log("logging Out");
       fetch("/users/logout");
       this.props.LoggingIn("",false)
     };
-
+    // goes and creates the user in the database
     createAccount = (e) => {
         e.preventDefault();
         fetch("users/addUser", {
@@ -68,7 +71,7 @@ export default class UserPage extends Component {
             .then(data => data.text())
             .then(response => this.setState({message: response}));
     };
-
+    // lets the person make a bleat then when they make a bleat adds it to the list
     makeABleat = (e) => {
 
         e.preventDefault();
@@ -93,6 +96,7 @@ export default class UserPage extends Component {
         this.gatherBleats()
     };
 
+    // gathers all of the persons bleats that is logged in
     gatherBleats=()=>
     {
         console.log("getting your bleats");
@@ -119,7 +123,7 @@ export default class UserPage extends Component {
                 console.log("Wait are you supposed to be here??")
             }
     };
-
+    //  send up the bleats id for the edit page to get the correct bleat to edit
     editIdUpdate=(e)=>
     {
         // console.log(e.target.name);

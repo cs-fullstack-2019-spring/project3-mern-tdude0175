@@ -4,7 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 var BleatCollection = require("../models/BleatSchema");
 
 
-/* GET home page. */
+/* used to gather the bleats and filter through them to sort by creation date then lets react slice out how many to display*/
 router.get('/', function (req, res, next) {
     console.log("we bleatin bro");
     let bleatArray = [];
@@ -41,6 +41,7 @@ router.get('/', function (req, res, next) {
 
 });
 
+// grabs the bleat to edit and send it back for editing
 router.post("/locateBleatToEdit",(req,res)=>
 {
     let bleat = {};
@@ -64,25 +65,25 @@ router.post("/locateBleatToEdit",(req,res)=>
 
     })
 });
-
+// actually edits the bleat and saves it to the server withh edited data
 router.put("/editBleat", (req, res) => {
     BleatCollection.findOneAndUpdate({"bleat._id": req.body._id},
         {$set:{"bleat.$": req.body}}, (errors, results) => {
             if (errors) res.send(errors);
             else {
                 console.log("bleat updated");
-                res.send("made it through??")
+                res.send("made it through!!")
             }
         });
 });
-
+// locates all bleats for a single user and sends them back for display on userpage
 router.post("/findBleats", (req, res) => {
     BleatCollection.find({username: req.body.username}, (errors, results) => {
         if (errors) res.send(errors);
         else (res.send(results[0].bleat))
     })
 });
-
+// allows the person to add a bleat to their list of bleats and saves it using $push
 router.post("/addBleat", (req, res) => {
     BleatCollection.findOneAndUpdate({username: req.body.username},
         {$push: {bleat: req.body}}, (errors, results) => {
@@ -92,7 +93,8 @@ router.post("/addBleat", (req, res) => {
 });
 
 
-
+// firstly goes through all users with bleat messages that contain the search conditions then it runs through the users
+// of those bleats and adds the bleats that actually contain the search conditions to the array to be sent back
 router.post("/searchBleats", (req, res) => {
     let bleatArray = [];
     BleatCollection.find({"bleat.message": {"$regex": req.body.query}}, (errors, results) => {

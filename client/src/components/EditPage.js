@@ -2,6 +2,8 @@ import React, {Component} from "react"
 
 export default class EditPage extends Component
 {
+    // response message is used to tell if it successfully edited
+    // every other state is used to save the stuff
     constructor(props) {
         super(props);
         this.state={

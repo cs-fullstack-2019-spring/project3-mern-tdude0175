@@ -26,7 +26,7 @@ var createHash = function (password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
 
-/* GET users listing. */
+/* Used to get a persons profile picture and background image to send back to react for rendering on the page */
 router.post('/profilePictures', function (req, res, next) {
     console.log("GETTIN DA PICUTRES!");
     BleatCollection.findOne({username:req.body.username},(errors,results)=>
@@ -80,7 +80,7 @@ passport.use("register", new LocalStrategy
         })
     }
 ));
-
+//Runs the strategy to create the new user and send the info to the server to save
 router.post("/addUser",
     passport.authenticate("register",
         {
@@ -91,7 +91,7 @@ router.post("/addUser",
         res.send("Made it through!");
     }
 );
-
+//if the register fails in any way send this message back to let them know it failed
 router.get("registerfail", (req, res) => {
     res.send("failed to create user in strat");
 });
@@ -129,7 +129,7 @@ passport.use(new LocalStrategy(
         });
     }
 ));
-
+// runs the local strategy to log the person in currently it tries to save the username to the cookie but unsure if it is working
 router.post("/login",
     passport.authenticate("local",
         {
@@ -141,11 +141,11 @@ router.post("/login",
         res.send(req.body.username);
     }
 );
-
+// if the login route fails for any reason this is sent back to let them know if failed
 router.get("/faillogin", (req, res) => {
     res.send("failed to get through login");
 });
-
+// used to let a person log out of an account with this route
 router.get("/logout",(req,res)=>
 {
     console.log("log is set to out");
