@@ -5,8 +5,9 @@ var BleatCollection = require("../models/BleatSchema");
 
 
 /* used to gather the bleats and filter through them to sort by creation date then lets react slice out how many to display*/
-router.get('/', function (req, res, next) {
+router.get('/:username', function (req, res, next) {
     console.log("we bleatin bro");
+    console.log(req.params.username);
     let bleatArray = [];
     BleatCollection.find({}, (errors, results) => {
         if (errors) res.send(errors);
@@ -16,13 +17,15 @@ router.get('/', function (req, res, next) {
                 // console.log(results[i].bleat);
                 for (x = 0; x < results[i].bleat.length; x++) {
                     if (results[i].bleat[x].private) {
+                        if(results[i].username === req.params.username)
+                        {
+                            console.log("private bleat adding");
+                            let bleat = {username: results[i].username, bleat: results[i].bleat[x]};
+                            bleatArray.push(bleat);
+                        }
                     } else {
-                        // if (bleatArray.length === 5) {
-                        //     console.log("max reached");
-                        //     break
-                        // }
                         let bleat = {username: results[i].username, bleat: results[i].bleat[x]};
-                        // console.log(bleat);
+                        console.log(bleat);
                         bleatArray.push(bleat);
 
                     }
@@ -34,7 +37,7 @@ router.get('/', function (req, res, next) {
                 return b.bleat.created - a.bleat.created
             });
             // console.log("results:");
-            console.log(bleatArray);
+            // console.log(bleatArray);
             res.json(bleatArray)
         }
     });

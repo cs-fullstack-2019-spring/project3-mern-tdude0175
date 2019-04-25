@@ -32,12 +32,22 @@ export default class SearchPage extends Component {
     render() {
         if(this.state.searchResults !== "search Results") {
             var mapData = this.state.searchResults.map((Item) => {
-                return (
-                    <div key={Item.bleat._id}>
-                        <h3>{Item.username}</h3>
-                        {Item.bleat.message}
-                    </div>
-                )
+                if (Item.bleat.picture) {
+                    return (
+                        <div className={"bleat"} key={Item.bleat._id}>
+                            <img src={Item.bleat.picture} alt={Item.username}/>
+                            <h3>{Item.username}</h3>
+                            <p>{Item.bleat.message} </p>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div className={"bleat"} key={Item.bleat._id}>
+                            <h3>{Item.username}</h3>
+                            <p>{Item.bleat.message} </p>
+                        </div>
+                    )
+                }
             });
         }else
             {

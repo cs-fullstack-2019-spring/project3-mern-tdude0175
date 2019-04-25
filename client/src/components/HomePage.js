@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+
 var tweetDisplay = 5;
 export default class HomePage extends Component {
     // bleat is the group of bleats to display and bleatDisplay is used to display a specific amount of bleats
@@ -7,23 +8,35 @@ export default class HomePage extends Component {
         this.state =
             {
                 bleats: [],
-                bleatDisplay:5
+                bleatDisplay: 5
             }
     }
+
     // when the component mounts it will get the bleats to display with standard bleat display being 5
     componentDidMount() {
         this.getBleats()
     }
+
     // goes through the proxy to get the bleats to show and takes only the top 5, 10 , 20 depending on bleatDisplay
     getBleats = () => {
-        fetch("bleats/")
-            .then(data =>
-                // console.log(data);
-                data.json()
-            )
-            // .then(data => console.log(data))
-            .then(string => this.setState({bleats: string.slice(0, this.state.bleatDisplay)}));
+        if (this.props.username) {
+            fetch("bleats/" + this.props.username)
+                .then(data =>
+                    // console.log(data);
+                    data.json()
+                )
+                // .then(data => console.log(data))
+                .then(string => this.setState({bleats: string.slice(0, this.state.bleatDisplay)}));
 
+        } else {
+            fetch("bleats/username")
+                .then(data =>
+                    // console.log(data);
+                    data.json()
+                )
+                // .then(data => console.log(data))
+                .then(string => this.setState({bleats: string.slice(0, this.state.bleatDisplay)}));
+        }
     };
     // function to go to the backend to logg the person in
     loginConfirm = (e) => {
@@ -48,16 +61,17 @@ export default class HomePage extends Component {
                 } else {
                     this.props.LoggingIn(response, true)
                 }
-            })
+            });
+        this.getBleats()
     };
     // function used to change the amount of bleats to be displayed and regathers the bleats to display
-    changeBleatDisplay =(e)=>
-    {
-        this.setState({bleatDisplay:e.target.value});
+    changeBleatDisplay = (e) => {
+        this.setState({bleatDisplay: e.target.value});
         this.getBleats()
     };
 
     render() {
+        console.log(this.props.username);
         // console.log(this.state.bleats);
         var mapData = this.state.bleats.map((Item) => {
             console.log(Item);
@@ -66,14 +80,14 @@ export default class HomePage extends Component {
                     <div className={"bleat"} key={Item.bleat._id}>
                         <img src={Item.bleat.picture} alt={Item.username}/>
                         <h3>{Item.username}</h3>
-                       <p>{Item.bleat.message} </p>
+                        <p>{Item.bleat.message} </p>
                     </div>
                 )
             } else {
                 return (
                     <div className={"bleat"} key={Item.bleat._id}>
                         <h3>{Item.username}</h3>
-                       <p>{Item.bleat.message} </p>
+                        <p>{Item.bleat.message} </p>
                     </div>
                 )
             }

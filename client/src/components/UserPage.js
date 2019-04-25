@@ -143,21 +143,28 @@ export default class UserPage extends Component {
             console.log(this.state.personalBleats);
             let mappedBleats = this.state.personalBleats.map((bleat)=>
             {
-                return(
-                    <div key={bleat._id}>
-                        <p>
-                        {bleat.message}
-                        <Link to={"/edit"}><button name={bleat._id} onClick={this.editIdUpdate}>Edit</button></Link>
-                        </p>
-                    </div>
-                )
+                if (bleat.picture) {
+                    return (
+                        <div className={"bleat"} key={bleat._id}>
+                            <img src={bleat.picture} alt={bleat.username}/>
+                            <p>{bleat.message} </p>
+                            <Link to={"/edit"}><button name={bleat._id} onClick={this.editIdUpdate}>Edit</button></Link>
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div className={"bleat"} key={bleat._id}>
+                            <p>{bleat.message} </p>
+                            <Link to={"/edit"}><button name={bleat._id} onClick={this.editIdUpdate}>Edit</button></Link>
+                        </div>
+                    )
+                }
             });
             return (
                 <div>
                     {background}
                     <h1>Welcome {this.props.username}!</h1>
                     {picture}
-                    <p><button onClick={this.logout}>LogOut</button></p>
                     <form onSubmit={this.makeABleat}>
                         <p>
                             <input id={"message"} name={"message"} type="text"

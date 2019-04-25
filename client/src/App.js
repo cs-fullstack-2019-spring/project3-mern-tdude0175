@@ -29,6 +29,14 @@ class App extends Component {
         this.setState({bleatId: id})
     };
 
+
+    logout=()=>
+    {
+        console.log("logging Out");
+        fetch("/users/logout");
+        this.LoggingIn("",false)
+    };
+
     render() {
         return (
             <div className="App">
@@ -37,7 +45,9 @@ class App extends Component {
                     <Link to={"/"}>Home</Link>
                     <Link to={"/AccountPage"}>Account</Link>
                     <Link to={"/Search"}>Search</Link>
-                    <Route exact path={"/"} component={() => <HomePage LoggingIn={this.LoggingIn}
+                    <p><button onClick={this.logout}>LogOut</button></p>
+                    <Route exact path={"/"} component={() => <HomePage username={this.state.user.username}
+                                                                       LoggingIn={this.LoggingIn}
                                                                        isLoggedIn={this.state.user.isLoggedIn}/>}/>
                     <Route path={"/AccountPage"}
                            component={() => <UserPage LoggingIn={this.LoggingIn} username={this.state.user.username}

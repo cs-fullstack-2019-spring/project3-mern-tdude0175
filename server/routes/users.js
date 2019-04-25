@@ -150,7 +150,7 @@ router.get("/logout",(req,res)=>
 {
     console.log("log is set to out");
     req.session.username = null;
-
+    res.send(null)
 });
 
 module.exports = router;
